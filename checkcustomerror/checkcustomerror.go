@@ -2,7 +2,6 @@ package checkcustomerror
 
 import (
 	"go/ast"
-	"go/types"
 	"strconv"
 	"strings"
 
@@ -67,18 +66,6 @@ func run(pass *analysis.Pass) (any, error) {
 	})
 
 	return nil, nil
-}
-
-func getFun(pass *analysis.Pass, fun ast.Expr) *types.Func {
-	switch fun := fun.(type) {
-	case *ast.Ident:
-		obj, _ := pass.TypesInfo.ObjectOf(fun).(*types.Func)
-		return obj
-	case *ast.SelectorExpr:
-		obj, _ := pass.TypesInfo.ObjectOf(fun.Sel).(*types.Func)
-		return obj
-	}
-	return nil
 }
 
 func getCommentMap(pass *analysis.Pass) map[string]string {
