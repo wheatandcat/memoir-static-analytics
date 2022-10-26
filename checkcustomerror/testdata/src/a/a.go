@@ -1,6 +1,9 @@
 package a
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func f() error {
 	var gopher int
@@ -20,4 +23,14 @@ func f() error {
 
 func customError(err error) error {
 	return err // nocheck:checkcustomerror
+}
+
+func a() (string, error) {
+	err := errors.New("test")
+	return "test", err // want "require customError wrap"
+}
+
+func b() (string, error) {
+	err := errors.New("test")
+	return "test", customError(err) // OK
 }
