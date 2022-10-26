@@ -2,6 +2,7 @@ package checkcustomerror
 
 import (
 	"go/ast"
+	"go/types"
 	"strconv"
 	"strings"
 
@@ -22,6 +23,8 @@ var Analyzer = &analysis.Analyzer{
 	},
 }
 
+var errType = types.Universe.Lookup("error").Type()
+
 func run(pass *analysis.Pass) (any, error) {
 	cmap := getCommentMap(pass)
 
@@ -38,12 +41,9 @@ func run(pass *analysis.Pass) (any, error) {
 			if last == nil {
 				return
 			}
-			lastTyp := pass.TypesInfo.TypeOf(last)
-			if lastTyp == nil {
-				return
-			}
 
-			if lastTyp.String() != "error" {
+			lastTyp := pass.TypesInfo.TypeOf(last)
+			if lastTyp != errType {
 				return
 			}
 
