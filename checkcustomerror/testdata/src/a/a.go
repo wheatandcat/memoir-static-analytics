@@ -7,7 +7,7 @@ func f() error {
 
 	if gopher == 0 {
 		err := fmt.Errorf("Error: %s", gopher)
-		return err // want "require wrap customError"
+		return err // want "require customError wrap"
 	}
 
 	if gopher == 1 {

@@ -60,7 +60,7 @@ func run(pass *analysis.Pass) (any, error) {
 				}
 			}
 
-			pass.Reportf(n.Pos(), "require wrap customError")
+			pass.Reportf(n.Pos(), "require customError wrap")
 
 		}
 	})
