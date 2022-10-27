@@ -1,4 +1,4 @@
-module checkcustomerror
+module github.com/wheatandcat/memoir-static-analytics
 
 go 1.19
 

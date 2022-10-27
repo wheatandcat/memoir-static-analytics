@@ -3,9 +3,8 @@ package checkcustomerror_test
 import (
 	"testing"
 
-	"checkcustomerror"
-
 	"github.com/gostaticanalysis/testutil"
+	"github.com/wheatandcat/memoir-static-analytics/checkcustomerror"
 	"golang.org/x/tools/go/analysis/analysistest"
 )
 

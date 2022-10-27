@@ -1,8 +1,7 @@
 package main
 
 import (
-	"checkcustomerror"
-
+	"github.com/wheatandcat/memoir-static-analytics/checkcustomerror"
 	"golang.org/x/tools/go/analysis/unitchecker"
 )
 
