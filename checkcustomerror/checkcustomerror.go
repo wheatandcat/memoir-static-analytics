@@ -47,12 +47,11 @@ func run(pass *analysis.Pass) (any, error) {
 				return
 			}
 
-			ident, _ := last.(*ast.Ident)
-			if ident == nil {
+			pos := pass.Fset.Position(n.Pos())
+			if !check(pass, last) {
 				return
 			}
 
-			pos := pass.Fset.Position(n.Pos())
 			c, ok := cmap[pos.Filename+"_"+strconv.Itoa(pos.Line)]
 			if ok {
 				if strings.Contains(c, "nocheck:checkcustomerror") {
@@ -66,6 +65,37 @@ func run(pass *analysis.Pass) (any, error) {
 	})
 
 	return nil, nil
+}
+
+func check(pass *analysis.Pass, item ast.Expr) bool {
+	ident, _ := item.(*ast.Ident)
+	if ident != nil {
+		return true
+	}
+
+	call := item.(*ast.CallExpr)
+	if call == nil {
+		return false
+	}
+	obj := getFun(pass, call.Fun)
+	if obj == nil {
+		return false
+	}
+
+	// メソッド名がCustomErrorでない場合はチェック
+	return obj.Name() != "CustomError"
+}
+
+func getFun(pass *analysis.Pass, fun ast.Expr) *types.Func {
+	switch fun := fun.(type) {
+	case *ast.Ident:
+		obj, _ := pass.TypesInfo.ObjectOf(fun).(*types.Func)
+		return obj
+	case *ast.SelectorExpr:
+		obj, _ := pass.TypesInfo.ObjectOf(fun.Sel).(*types.Func)
+		return obj
+	}
+	return nil
 }
 
 func getCommentMap(pass *analysis.Pass) map[string]string {

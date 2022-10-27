@@ -15,13 +15,13 @@ func f() error {
 
 	if gopher == 1 {
 		err := fmt.Errorf("Error: %s", gopher)
-		return customError(err) // OK
+		return CustomError(err) // OK
 	}
 
 	return nil // OK
 }
 
-func customError(err error) error {
+func CustomError(err error) error {
 	return err // nocheck:checkcustomerror
 }
 
@@ -32,5 +32,13 @@ func a() (string, error) {
 
 func b() (string, error) {
 	err := errors.New("test")
-	return "test", customError(err) // OK
+	return "test", CustomError(err) // OK
+}
+
+func c() (string, error) {
+	return "test", errors.New("test") // want "require customError wrap"
+}
+
+func d() (string, error) {
+	return "test", CustomError(errors.New("test")) // OK
 }
