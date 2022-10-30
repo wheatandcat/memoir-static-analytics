@@ -1,7 +1,6 @@
 package checkcustomerror
 
 import (
-	"flag"
 	"go/ast"
 	"go/types"
 	"regexp"
@@ -32,11 +31,10 @@ var (
 var errType = types.Universe.Lookup("error").Type()
 
 func init() {
-	flag.StringVar(&excludeRegex, "exclude_regex", "_test.go", "exclude files by regex")
+	Analyzer.Flags.StringVar(&excludeRegex, "exclude_regex", "_test.go", "exclude files by regex")
 }
 
 func run(pass *analysis.Pass) (any, error) {
-	flag.Parse()
 	cmap := getCommentMap(pass)
 
 	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
