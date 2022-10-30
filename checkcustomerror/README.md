@@ -1,7 +1,6 @@
 # github.com/wheatandcat/memoir-static-analytics/checkcustomerror
 
-
-[![pkg.go.dev][gopkg-badge]][gopkg]
+[![Go Reference](https://pkg.go.dev/badge/github.com/wheatandcat/memoir-static-analytics/checkcustomerror.svg)](https://pkg.go.dev/github.com/wheatandcat/memoir-static-analytics/checkcustomerror)
 
 ## Install
 
