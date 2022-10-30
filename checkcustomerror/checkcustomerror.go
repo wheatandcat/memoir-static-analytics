@@ -31,7 +31,7 @@ var (
 var errType = types.Universe.Lookup("error").Type()
 
 func init() {
-	Analyzer.Flags.StringVar(&excludeRegex, "exclude_regex", "_test.go|e2e|generated", "exclude files by regex")
+	Analyzer.Flags.StringVar(&excludeRegex, "exclude_regex", "_test.go|e2e|generated|graph/model/validate.go", "exclude files by regex")
 }
 
 func run(pass *analysis.Pass) (any, error) {
@@ -103,7 +103,7 @@ func check(pass *analysis.Pass, item ast.Expr) bool {
 	}
 
 	// メソッド名がCustomErrorでない場合はチェック
-	return obj.Name() != "CustomError"
+	return obj.Name() != "CustomError" && obj.Name() != "CustomErrorWrap"
 }
 
 func getFun(pass *analysis.Pass, fun ast.Expr) *types.Func {
