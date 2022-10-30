@@ -1,5 +1,8 @@
 # github.com/wheatandcat/memoir-static-analytics/checkcustomerror
 
+
+[![pkg.go.dev][gopkg-badge]][gopkg]
+
 ## Install
 
 ```bash
