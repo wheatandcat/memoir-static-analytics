@@ -1,8 +1,10 @@
 package checkcustomerror
 
 import (
+	"flag"
 	"go/ast"
 	"go/types"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -23,9 +25,18 @@ var Analyzer = &analysis.Analyzer{
 	},
 }
 
+var (
+	excludeRegex string
+)
+
 var errType = types.Universe.Lookup("error").Type()
 
+func init() {
+	flag.StringVar(&excludeRegex, "exclude_regex", "_test.go", "exclude files by regex")
+}
+
 func run(pass *analysis.Pass) (any, error) {
+	flag.Parse()
 	cmap := getCommentMap(pass)
 
 	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
@@ -37,6 +48,18 @@ func run(pass *analysis.Pass) (any, error) {
 	inspect.Preorder(nodeFilter, func(n ast.Node) {
 		switch n := n.(type) {
 		case *ast.ReturnStmt:
+			pos := pass.Fset.Position(n.Pos())
+			r := regexp.MustCompile(excludeRegex)
+
+			// ファイル名がexcludeRegexにマッチする場合はチェックしない
+			if r.MatchString(pos.Filename) {
+				return
+			}
+
+			if len(n.Results) == 0 {
+				return
+			}
+
 			last := n.Results[len(n.Results)-1]
 			if last == nil {
 				return
@@ -47,7 +70,6 @@ func run(pass *analysis.Pass) (any, error) {
 				return
 			}
 
-			pos := pass.Fset.Position(n.Pos())
 			if !check(pass, last) {
 				return
 			}
