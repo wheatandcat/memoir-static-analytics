@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-$ go install github.com/wheatandcat/memoir-static-analytics/checkcustomerror/cmd/checkcustomerror@v0.0.2
+$ go install github.com/wheatandcat/memoir-static-analytics/checkcustomerror/cmd/checkcustomerror@v0.0.6
 ```
 
 ## How to use
