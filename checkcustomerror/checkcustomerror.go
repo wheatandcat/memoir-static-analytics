@@ -31,7 +31,7 @@ var (
 var errType = types.Universe.Lookup("error").Type()
 
 func init() {
-	Analyzer.Flags.StringVar(&excludeRegex, "exclude_regex", "_test.go||e2e|generated", "exclude files by regex")
+	Analyzer.Flags.StringVar(&excludeRegex, "exclude_regex", "_test.go|e2e|generated", "exclude files by regex")
 }
 
 func run(pass *analysis.Pass) (any, error) {
